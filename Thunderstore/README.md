@@ -5,3 +5,8 @@ Created by **Phorg**.
 ---
 
 ![item chart png](plugins/TFTItems/icons/readMeItemChart.png)
+
+
+## Asset Credits
+
+All item icons are pulled from *League of Legends Wiki* (© Riot Games), not my own creations. 
