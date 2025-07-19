@@ -4,7 +4,7 @@ Created by **Phorg**. https://thunderstore.io/package/Phorg/Redemption/
 
 ---
 
-![item chart png](Thunderstore/plugins/TFTItems/icons/readMeItemChart.png)
+![item chart png](Thunderstore/icons/readMeItemChart.png)
 
 
 ## Asset Credits
