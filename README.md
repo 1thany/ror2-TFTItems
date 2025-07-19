@@ -1,6 +1,6 @@
 # TFT Items - Risk of Rain 2 Mod
 
-Created by **Phorg**. https://thunderstore.io/package/Phorg/Redemption/
+Created by **Phorg**. https://thunderstore.io/package/Phorg/TFTItems/
 
 ---
 
