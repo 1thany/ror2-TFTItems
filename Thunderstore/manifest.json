@@ -1,6 +1,6 @@
 ﻿{
   "name": "TFTItems",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "description": "Added items from Teamfight Tactics (League of Legends).",
   "website_url": "https://github.com/1thany/ror2-TFTItems",
   "dependencies": [
