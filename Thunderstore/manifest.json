@@ -1,8 +1,8 @@
 ﻿{
-  "name": "TFT Items",
+  "name": "TFTItems",
   "version_number": "1.0.0",
   "description": "Added items from Teamfight Tactics (League of Legends).",
-  "website_url": "",
+  "website_url": "https://github.com/1thany/ror2-TFTItems",
   "dependencies": [
     "bbepis-BepInExPack-5.4.2109",
     "RiskofThunder-HookGenPatcher-1.2.3",
