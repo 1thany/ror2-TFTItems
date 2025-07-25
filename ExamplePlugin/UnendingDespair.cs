@@ -4,6 +4,7 @@ using RoR2;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using static ExamplePlugin.ExamplePlugin;
 using static R2API.RecalculateStatsAPI;
 
 namespace ExamplePlugin
@@ -27,6 +28,9 @@ namespace ExamplePlugin
             ItemDef.pickupIconSprite = ExamplePlugin.LoadSpriteFromFile("UnendingDespair.png");
             ItemDef.canRemove = true;
             ItemDef.hidden = false;
+
+            var prefab = AssetLoader.LoadAsset("UnendingDespairItem");
+            ItemDef.pickupModelPrefab = prefab;
 
             ItemAPI.Add(new CustomItem(ItemDef, new ItemDisplayRuleDict(null)));
 
