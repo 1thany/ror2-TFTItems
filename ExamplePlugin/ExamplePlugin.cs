@@ -34,7 +34,7 @@ namespace ExamplePlugin
 
         private void Update()
         {
-            /**
+            
             if (Input.GetKeyDown(KeyCode.F2))
             {
                 var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
@@ -63,7 +63,7 @@ namespace ExamplePlugin
 
                 PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
             }
-            **/
+            
         }
 
         private static void RegisterLanguage()

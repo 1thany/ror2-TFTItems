@@ -29,7 +29,7 @@ namespace ExamplePlugin
             ItemDef.canRemove = true;
             ItemDef.hidden = false;
 
-            var prefab = AssetLoader.LoadAsset("UnendingDespairItem");
+            var prefab = AssetLoader.LoadAsset("unendingDespairItem");
             ItemDef.pickupModelPrefab = prefab;
 
             ItemAPI.Add(new CustomItem(ItemDef, new ItemDisplayRuleDict(null)));
