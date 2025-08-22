@@ -4,11 +4,11 @@ Created by **Phorg**. https://thunderstore.io/package/Phorg/TFTItems/
 
 ---
 
-![item chart png](https://github.com/1thany/ror2-TFTItems/blob/main/Thunderstore/icons/readMeItemChart.png)
+![item chart png](https://raw.githubusercontent.com/1thany/ror2-TFTItems/main/Thunderstore/icons/readMeItemChart.png)
 
 
 ## Roadmap
-- [ ] Models for Unending Despair and Horizon Focus
+- [X] Models for Unending Despair and Horizon Focus
 - [ ] Custom VFX for item effects
 - [ ] New Equipment / items
 

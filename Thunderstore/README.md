@@ -8,7 +8,7 @@ Created by **Phorg**.
 
 
 ## Roadmap
-- [O] Models for Unending Despair and Horizon Focus
+- [X] Models for Unending Despair and Horizon Focus
 - [ ] Custom VFX for item effects
 - [ ] New Equipment / items
 
