@@ -24,6 +24,7 @@ namespace ExamplePlugin
         {
             Log.Init(Logger);
 
+            TempVFX.Load(); PulseHitVFXListener.Init(); 
             AllyArmor.Define(); AllyArmor.Hooks();
             FlickerBlade.Define(); FlickerBlade.Hooks();
             HorizonFocus.Define(); HorizonFocus.Hooks();
@@ -34,7 +35,7 @@ namespace ExamplePlugin
 
         private void Update()
         {
-            
+            /**
             if (Input.GetKeyDown(KeyCode.F2))
             {
                 var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
@@ -43,7 +44,7 @@ namespace ExamplePlugin
 
                 PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
 
-                AssetLoader.ListAllAssets();
+                //AssetLoader.ListAllAssets();
             }
 
             if (Input.GetKeyDown(KeyCode.F3))
@@ -63,6 +64,7 @@ namespace ExamplePlugin
 
                 PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
             }
+            **/
             
         }
 

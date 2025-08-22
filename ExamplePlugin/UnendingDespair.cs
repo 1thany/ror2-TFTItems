@@ -95,14 +95,22 @@ namespace ExamplePlugin
                 lastBarrier = current;
             }
 
+
             private void FirePulse(float depletedBarrier, int stacks)
             {
                 float DAMAGE_MULT = 2.50f + 1.50f * (stacks - 1);
-                float damage = depletedBarrier * DAMAGE_MULT * stacks;
+                float damage = depletedBarrier * DAMAGE_MULT;
 
-                BlastAttack pulse = new BlastAttack
+                // create a short-lived inflictor tag so we can recognize our hits
+                var markerGO = new GameObject("UD_PulseMarker");
+                var marker = markerGO.AddComponent<PulseMarker>();
+                marker.center = body.corePosition;           // helps aim impact normal
+                marker.ttl = 1.0f;                           // lifetime just needs to cover the hit window
+
+                var pulse = new BlastAttack
                 {
                     attacker = body.gameObject,
+                    inflictor = markerGO,                    // <-- key line
                     attackerFiltering = AttackerFiltering.NeverHitSelf,
                     baseDamage = damage,
                     baseForce = 0f,
@@ -113,16 +121,15 @@ namespace ExamplePlugin
                     falloffModel = BlastAttack.FalloffModel.None,
                     position = body.corePosition,
                     procCoefficient = 0.25f,
-                    radius = 12f + 2f * (stacks - 1)     // radius scales a bit with stacks
+                    radius = 12f + 2f * (stacks - 1)
                 };
 
                 pulse.Fire();
-                EffectManager.SpawnEffect(UnendingDespair.PulseVFX,
-                                          new EffectData { origin = body.corePosition, scale = pulse.radius },
-                                          true);
 
-                // Chat.AddMessage($"<style=cIsUtility>{ItemDef.nameToken}</style> pulse! {damage:0} dmg  (lost {depletedBarrier:0} barrier)");
+                //EffectManager.SpawnEffect(UnendingDespair.PulseVFX,
+                //    new EffectData { origin = body.corePosition, scale = pulse.radius }, true);
             }
+
         }
 
         private static void BarrierOutOfCombat(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody body)

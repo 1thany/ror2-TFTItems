@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3368235225
+CRC: 2556498592
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b6f7060b042fa2bd78401e2093663cbc
+    Hash: 4f137c859cd11d30b8201b706b199b81
   TypeTreeHash:
     serializedVersion: 2
     Hash: 81fc4833398717ae320ec5bd08c661f4
@@ -25,6 +25,7 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Models/unendingDespair/unendingDespairItem.prefab
 - Assets/Models/horizonFocus/horizonFocusItem.prefab
 - Assets/Models/flickerBlade/flickerBladeItem.prefab
 - Assets/Models/locket/locketItem.prefab
