@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Networking; // for NetworkServer
 
 namespace ExamplePlugin
@@ -29,7 +30,8 @@ namespace ExamplePlugin
             if (!inflictor) return;
 
             var marker = inflictor.GetComponent<PulseMarker>();
-            if (!marker) return;                              // not our pulse
+            if (!marker) return; // not our pulse
+            // Debug.LogWarning("Found PulseMarker"); 
 
             // where to spawn: victim core is reliable
             Vector3 pos = report.victimBody.corePosition;
@@ -62,8 +64,8 @@ namespace ExamplePlugin
         public static void Load()
         {
             // Try common built-in impact VFX paths
-            OnHitImpactPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/OmniImpactVFX")
-                                   ?? LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/ImpactEffects/OmniImpactVFX");
+            OnHitImpactPrefab = Addressables.LoadAssetAsync<GameObject>(
+            "RoR2/Base/Common/VFX/OmniExplosionVFX.prefab").WaitForCompletion();
 
             if (!OnHitImpactPrefab)
                 Debug.LogWarning("[UD] TempVFX: Could not find OmniImpactVFX, on-hit effects will be skipped.");

@@ -17,8 +17,8 @@ namespace ExamplePlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Phorg";
-        public const string PluginName = "LeagueItems";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginName = "TFTItems";
+        public const string PluginVersion = "1.0.3";
 
         public void Awake()
         {
@@ -29,13 +29,14 @@ namespace ExamplePlugin
             FlickerBlade.Define(); FlickerBlade.Hooks();
             HorizonFocus.Define(); HorizonFocus.Hooks();
             UnendingDespair.Define(); UnendingDespair.Hooks();
+            SoulLink.Define(); SoulLink.Hooks();
 
             RegisterLanguage();
         }
 
         private void Update()
         {
-            /**
+            
             if (Input.GetKeyDown(KeyCode.F2))
             {
                 var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
@@ -64,8 +65,16 @@ namespace ExamplePlugin
 
                 PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
             }
-            **/
-            
+
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
+                var pos = body.transform.position + body.transform.forward * 2f;
+                var pickup = PickupCatalog.FindPickupIndex(SoulLink.ItemDef.equipmentIndex);
+
+                PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
+            }
+
         }
 
         private static void RegisterLanguage()
@@ -104,6 +113,15 @@ namespace ExamplePlugin
                 "deal <style=cIsDamage>20%</style> of their current health " +
                 "(+10% per stack) as additional damage.");
             LanguageAPI.Add("HORIZON_FOCUS_LORE", "The world narrows to a single point…");
+
+            /* ────────────────  Knight's Vow ──────────────── */
+            LanguageAPI.Add("KNIGHTS_VOW_NAME", "Knight’s Vow");
+            LanguageAPI.Add("KNIGHTS_VOW_PICKUP", "Bond to an ally; redirect damage and share healing.");
+            LanguageAPI.Add("KNIGHTS_VOW_DESC",
+                $"Bond to an ally; redirect \n" +
+                $"- If the ally is a <style=cIsUtility>Player</style>: Redirect <style=cIsHealing>15%</style> of their post-mitigated damage to you. When they deal damage, heal you for 10% of damage dealt.\n" +
+                $"- If the ally is a <style=cIsUtility>Minion</style>: Redirect <style=cIsHealing>15%</style> of your post-mitigated damage to the minion. When you deal damage, heal the minion for 10% of damage dealt.");
+            LanguageAPI.Add("KNIGHTS_VOW_LORE", "A pledge to stand between harm and those who cannot stand alone.");
         }
 
         public static Sprite LoadSpriteFromFile(string fileName)
