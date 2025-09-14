@@ -18,7 +18,7 @@ namespace ExamplePlugin
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Phorg";
         public const string PluginName = "TFTItems";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.1.1";
 
         public void Awake()
         {
