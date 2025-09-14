@@ -111,6 +111,8 @@ namespace ExamplePlugin
                 {
                     attacker = body.gameObject,
                     inflictor = markerGO,                    // <-- key line
+                    teamIndex = body.teamComponent ? body.teamComponent.teamIndex
+                                             : TeamComponent.GetObjectTeam(body.gameObject),
                     attackerFiltering = AttackerFiltering.NeverHitSelf,
                     baseDamage = damage,
                     baseForce = 0f,

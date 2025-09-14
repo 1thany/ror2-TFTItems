@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2556498592
+CRC: 1853956074
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4f137c859cd11d30b8201b706b199b81
+    Hash: 6b75e2c9646d61da0b7db12a25ea3e74
   TypeTreeHash:
     serializedVersion: 2
     Hash: 81fc4833398717ae320ec5bd08c661f4
@@ -26,6 +26,7 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Models/unendingDespair/unendingDespairItem.prefab
+- Assets/Models/knightsVow/knightsVowItem.prefab
 - Assets/Models/horizonFocus/horizonFocusItem.prefab
 - Assets/Models/flickerBlade/flickerBladeItem.prefab
 - Assets/Models/locket/locketItem.prefab

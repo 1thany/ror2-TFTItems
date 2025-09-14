@@ -1,6 +1,6 @@
 ﻿{
   "name": "TFTItems",
-  "version_number": "1.0.3",
+  "version_number": "1.1.0",
   "description": "Added items from Teamfight Tactics (League of Legends).",
   "website_url": "https://github.com/1thany/ror2-TFTItems",
   "dependencies": [
@@ -9,6 +9,7 @@
     "RiskofThunder-R2API_Addressables-1.0.4",
     "RiskofThunder-R2API_RecalculateStats-1.6.0",
     "RiskofThunder-R2API_Items-1.0.7",
-    "RiskofThunder-R2API_Language-1.0.1"
+    "RiskofThunder-R2API_Language-1.0.1",
+    "RiskofThunder-R2API_DamageType-1.1.7"
     ]
 }

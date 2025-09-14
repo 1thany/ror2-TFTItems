@@ -9,8 +9,8 @@ Created by **Phorg**. https://thunderstore.io/package/Phorg/TFTItems/
 
 ## Roadmap
 - [X] Models for Unending Despair and Horizon Focus
+- [X] New Equipment / items
 - [ ] Custom VFX for item effects
-- [ ] New Equipment / items
 
 
 ## Asset Credits

@@ -29,7 +29,7 @@ namespace ExamplePlugin
         // Tag redirected hits to avoid recursion
         internal static readonly DamageAPI.ModdedDamageType RedirectTag = DamageAPI.ReserveDamageType();
 
-        internal const bool DEBUG_CHAT = true;
+        internal const bool DEBUG_CHAT = false;
 
         internal static void Define()
         {
@@ -68,6 +68,7 @@ namespace ExamplePlugin
                 return orig(self, equipmentDef);
             };
 
+            Targeting.HookIndicator(); Targeting.PreloadIndicatorPrefab();
             On.RoR2.HealthComponent.TakeDamage += TakeDamage_PreMitRedirect;
             GlobalEventManager.onServerDamageDealt += GlobalOnServerDamageDealt;
         }
@@ -189,7 +190,106 @@ namespace ExamplePlugin
 
         public static class Targeting
         {
-            public static CharacterBody FindFriendlyAllyInAim(EquipmentSlot slot, float maxRange, float maxAngle = 10f)
+            static GameObject _visPrefab;
+            static readonly Dictionary<EquipmentSlot, Indicator> _inds = new();
+
+            internal static void PreloadIndicatorPrefab()
+            {
+                // Try known keys (paths can vary slightly by version)
+                string[] keys = {
+                    "RoR2/Base/Equipment/PassiveHealing/WoodSpriteIndicator.prefab",
+                    "RoR2/Base/Lightning/LightningIndicator.prefab",
+                    "RoR2/Base/Recycler/RecyclerIndicator.prefab"
+                };
+
+                foreach (var k in keys)
+                {
+                    try
+                    {
+                        var go = Addressables
+                            .LoadAssetAsync<GameObject>(k).WaitForCompletion();
+                        if (go) { _visPrefab = go; break; }
+                    }
+                    catch { /* try next */ }
+                }
+
+                if (SoulLink.DEBUG_CHAT && !_visPrefab)
+                    Chat.AddMessage("[PV] indicator prefab not found via Addressables (check key)");
+            }
+
+            internal static void HookIndicator()
+            {
+                On.RoR2.EquipmentSlot.Update += (orig, self) =>
+                {
+                    orig(self);
+                    UpdateIndicator(self);
+                };
+                On.RoR2.EquipmentSlot.OnDestroy += (orig, self) =>
+                {
+                    if (_inds.TryGetValue(self, out var ind) && ind != null) ind.active = false;
+                    _inds.Remove(self);
+                    orig(self);
+                };
+            }
+
+            static void UpdateIndicator(EquipmentSlot slot)
+            {
+                var body = slot.characterBody;
+                var inv = body ? body.inventory : null;
+
+                if (slot.stock <= 0 || slot.cooldownTimer > 0f) return;
+
+                bool show = inv && inv.currentEquipmentIndex == SoulLink.ItemDef.equipmentIndex;
+                if (!_inds.TryGetValue(slot, out var ind) || ind == null)
+                {
+                    var prefab = _visPrefab;
+                    if (!prefab) return; // nothing to show yet
+                    ind = new Indicator(slot.gameObject, prefab);
+                    ind.active = false;
+                    _inds[slot] = ind;
+                }
+
+                if (!show || !body || !body.teamComponent)
+                {
+                    ind.active = false;
+                    ind.targetTransform = null;
+                    return;
+                }
+
+                // IMPORTANT: aim at a HURTBOX (like Woodsprite), not the body
+                var hb = FindFriendlyHurtboxInAim(slot, SoulLink.MaxRange, 20f);
+                ind.targetTransform = hb ? hb.transform : null;
+                ind.active = hb;
+            }
+            static HurtBox FindFriendlyHurtboxInAim(EquipmentSlot slot, float maxRange, float maxAngle)
+            {
+                var body = slot.characterBody;
+                var team = body?.teamComponent;
+                if (!body || !team) return null;
+
+                float extra;
+                var ray = CameraRigController.ModifyAimRayIfApplicable(slot.GetAimRay(), slot.gameObject, out extra);
+
+                var search = new BullseyeSearch
+                {
+                    searchOrigin = ray.origin,
+                    searchDirection = ray.direction,
+                    filterByLoS = true,
+                    sortMode = BullseyeSearch.SortMode.Angle,
+                    maxAngleFilter = maxAngle,
+                    maxDistanceFilter = maxRange + extra,
+                    viewer = body
+                };
+                search.teamMaskFilter = TeamMask.none;
+                search.teamMaskFilter.AddTeam(team.teamIndex);   // friendlies
+                search.RefreshCandidates();
+                search.FilterOutGameObject(body.gameObject);
+
+                // Return the same thing Woodsprite would point at
+                return search.GetResults().FirstOrDefault();
+            }
+
+            public static CharacterBody FindFriendlyAllyInAim(EquipmentSlot slot, float maxRange, float maxAngle = 20f)
             {
                 var body = slot.characterBody;
                 var team = body?.teamComponent;

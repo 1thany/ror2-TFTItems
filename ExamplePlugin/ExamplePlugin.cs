@@ -37,43 +37,43 @@ namespace ExamplePlugin
         private void Update()
         {
             
-            if (Input.GetKeyDown(KeyCode.F2))
-            {
-                var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
-                var pos = body.transform.position + body.transform.forward * 2f;
-                var pickup = PickupCatalog.FindPickupIndex(FlickerBlade.ItemDef.itemIndex);
+            //if (Input.GetKeyDown(KeyCode.F2))
+            //{
+            //    var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
+            //    var pos = body.transform.position + body.transform.forward * 2f;
+            //    var pickup = PickupCatalog.FindPickupIndex(FlickerBlade.ItemDef.itemIndex);
 
-                PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
+            //    PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
 
-                //AssetLoader.ListAllAssets();
-            }
+            //    //AssetLoader.ListAllAssets();
+            //}
 
-            if (Input.GetKeyDown(KeyCode.F3))
-            {
-                var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
-                var pos = body.transform.position + body.transform.forward * 2f;
-                var pickup = PickupCatalog.FindPickupIndex(HorizonFocus.ItemDef.itemIndex);
+            //if (Input.GetKeyDown(KeyCode.F3))
+            //{
+            //    var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
+            //    var pos = body.transform.position + body.transform.forward * 2f;
+            //    var pickup = PickupCatalog.FindPickupIndex(HorizonFocus.ItemDef.itemIndex);
 
-                PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
-            }
+            //    PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
+            //}
 
-            if (Input.GetKeyDown(KeyCode.F4))
-            {
-                var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
-                var pos = body.transform.position + body.transform.forward * 2f;
-                var pickup = PickupCatalog.FindPickupIndex(AllyArmor.ItemDef.itemIndex);
+            //if (Input.GetKeyDown(KeyCode.F4))
+            //{
+            //    var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
+            //    var pos = body.transform.position + body.transform.forward * 2f;
+            //    var pickup = PickupCatalog.FindPickupIndex(AllyArmor.ItemDef.itemIndex);
 
-                PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
-            }
+            //    PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
+            //}
 
-            if (Input.GetKeyDown(KeyCode.F5))
-            {
-                var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
-                var pos = body.transform.position + body.transform.forward * 2f;
-                var pickup = PickupCatalog.FindPickupIndex(SoulLink.ItemDef.equipmentIndex);
+            //if (Input.GetKeyDown(KeyCode.F5))
+            //{
+            //    var body = PlayerCharacterMasterController.instances[0].master.GetBodyObject();
+            //    var pos = body.transform.position + body.transform.forward * 2f;
+            //    var pickup = PickupCatalog.FindPickupIndex(SoulLink.ItemDef.equipmentIndex);
 
-                PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
-            }
+            //    PickupDropletController.CreatePickupDroplet(pickup, pos, Vector3.up * 10f);
+            //}
 
         }
 
@@ -119,8 +119,8 @@ namespace ExamplePlugin
             LanguageAPI.Add("KNIGHTS_VOW_PICKUP", "Bond to an ally; redirect damage and share healing.");
             LanguageAPI.Add("KNIGHTS_VOW_DESC",
                 $"Bond to an ally; redirect \n" +
-                $"- If the ally is a <style=cIsUtility>Player</style>: Redirect <style=cIsHealing>15%</style> of their post-mitigated damage to you. When they deal damage, heal you for 10% of damage dealt.\n" +
-                $"- If the ally is a <style=cIsUtility>Minion</style>: Redirect <style=cIsHealing>15%</style> of your post-mitigated damage to the minion. When you deal damage, heal the minion for 10% of damage dealt.");
+                $"- If the ally is a <style=cIsUtility>Player</style>: Redirect <style=cIsHealing>20%</style> of their post-mitigated damage to you. When they deal damage, heal you for 15% of damage dealt.\n" +
+                $"- If the ally is a <style=cIsUtility>Minion</style>: Redirect <style=cIsHealing>20%</style> of your post-mitigated damage to the minion. When you deal damage, heal the minion for 15% of damage dealt.");
             LanguageAPI.Add("KNIGHTS_VOW_LORE", "A pledge to stand between harm and those who cannot stand alone.");
         }
 
