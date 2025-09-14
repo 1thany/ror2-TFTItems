@@ -12,14 +12,11 @@ namespace ExamplePlugin
     internal static class HorizonFocus
     {
         internal static ItemDef ItemDef;
-        const float PercentCurrent = 0.20f;
+        const float BasePctCurrent = 0.10f;
+        const float StackBonusPct = 0.05f;
         const float IcdSeconds = 1.00f;
-        const float MinStunDuration = 0.50f;
-        const float MinShockDuration = 0.20f;
-        const bool UseBypassArmor = false;
-        const bool UseBypassBlock = false;
 
-        static readonly Dictionary<CharacterBody, float> nextAllowedAt = new();
+        static readonly Dictionary<CharacterBody, float> _victimReadyAt = new();
 
         internal static void Define()
         {
@@ -42,74 +39,72 @@ namespace ExamplePlugin
             ItemAPI.Add(new CustomItem(ItemDef, new ItemDisplayRuleDict(null)));
         }
 
-        static readonly Dictionary<CharacterBody, float> _nextAllowedAt = new();
-
-        public static void Hooks()
+        internal static void Hooks()
         {
-            // STUN
-            On.RoR2.SetStateOnHurt.SetStun += (orig, self, duration) =>
-            {
-                orig(self, duration);
-                if (!NetworkServer.active || duration < MinStunDuration) return;
+            GlobalEventManager.onServerDamageDealt += OnServerDamageDealt;
 
-                var body = self ? self.GetComponent<CharacterBody>() : null;
-                var hc = body ? body.healthComponent : null;
-                if (!body || !hc || !hc.alive) return;
-
-                TryBurst(body, hc);
-            };
-
-            // SHOCK
-            On.RoR2.SetStateOnHurt.SetShock += (orig, self, duration) =>
-            {
-                orig(self, duration);
-                if (!NetworkServer.active || duration < MinShockDuration) return;
-
-                var body = self ? self.GetComponent<CharacterBody>() : null;
-                var hc = body ? body.healthComponent : null;
-                if (!body || !hc || !hc.alive) return;
-
-                TryBurst(body, hc);
-            };
-
-            // Clean up
+            // cleanup ICD entries when something dies
             On.RoR2.CharacterBody.OnDeathStart += (orig, self) =>
             {
-                if (NetworkServer.active) _nextAllowedAt.Remove(self);
+                if (NetworkServer.active) _victimReadyAt.Remove(self);
                 orig(self);
             };
         }
 
-        static void TryBurst(CharacterBody victimBody, HealthComponent victimHC)
+        static void OnServerDamageDealt(DamageReport report)
         {
+            if (!NetworkServer.active || report == null) return;
+
+            var victimBody = report.victimBody;
+            var attackerBody = report.attackerBody;
+            if (!victimBody || !attackerBody) return;
+
+            // item gating
+            var inv = attackerBody.inventory;
+            int stacks = inv ? inv.GetItemCount(ItemDef) : 0;
+            if (stacks <= 0) return;
+
+            var dt = report.damageInfo.damageType;
+            bool isStunOrShock =
+                (dt & DamageType.Stun1s) != 0 ||
+                (dt & DamageType.Shock5s) != 0;
+            if (!isStunOrShock) return;
+
+            // ICD per victim
             float now = Time.time;
+            if (_victimReadyAt.TryGetValue(victimBody, out var readyAt) && now < readyAt) return;
+            _victimReadyAt[victimBody] = now + IcdSeconds;
 
-            // ICD gate (shared for stun & shock)
-            if (_nextAllowedAt.TryGetValue(victimBody, out var ready) && now < ready) return;
-            _nextAllowedAt[victimBody] = now + IcdSeconds;
+            var hc = victimBody.healthComponent;
+            if (!hc || !hc.alive) return;
 
-            float current = victimHC.combinedHealth; // CURRENT health pool (not max)
-            if (current <= 0f) return;
+            float pct = BasePctCurrent + StackBonusPct * Mathf.Max(0, stacks - 1);
+            if (victimBody.isBoss || victimBody.isChampion) pct *= 0.5f;
+            float extra = hc.combinedHealth * pct;
+            if (extra <= 0f) return;
 
-            float extra = current * PercentCurrent;
-
-            var flags = DamageType.Silent | DamageType.NonLethal; // always non-lethal, no on-kill
-            if (UseBypassBlock) flags |= DamageType.BypassBlock;
-            if (UseBypassArmor) flags |= DamageType.BypassArmor;
-
-            var di = new DamageInfo
+            var burst = new DamageInfo
             {
-                attacker = null,           // neutral: no credit, no procs, no kills
-                inflictor = null,
+                attacker = attackerBody.gameObject,         
+                inflictor = report.damageInfo.inflictor,
                 damage = extra,
                 position = victimBody.corePosition,
-                damageType = flags,
-                procCoefficient = 0f,             // no on-hit procs
-                crit = false
+                damageType = DamageType.Silent | DamageType.NonLethal,
+                procCoefficient = 0f,
+                crit = false,
+                damageColorIndex = DamageColorIndex.Item,
             };
 
-            victimHC.TakeDamage(di);
-            GlobalEventManager.instance?.OnHitEnemy(di, victimBody.gameObject);
+            hc.TakeDamage(burst);
+            GlobalEventManager.instance?.OnHitEnemy(burst, victimBody.gameObject);
+        }
+
+        static bool IsPlayer(CharacterBody b)
+        {
+            if (!b) return false;
+            if (b.isPlayerControlled) return true;
+            var m = b.master;
+            return m && m.playerCharacterMasterController != null;
         }
     }
 }

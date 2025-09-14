@@ -56,8 +56,8 @@ namespace ExamplePlugin
             private CharacterBody body;
             private HealthComponent hc;
             private float lastBarrier;
-            static readonly float BASE_THRESHOLD_FRAC = 0.10f;   // 10 % of max HP per item
-            float accumulatedLoss = 0f;                           // reset each time you pulse
+            static readonly float BASE_THRESHOLD_FRAC = 0.10f;
+            float accumulatedLoss = 0f; 
 
             // convenience
             private ItemIndex ItemIndex => UnendingDespair.ItemDef.itemIndex;
@@ -69,12 +69,12 @@ namespace ExamplePlugin
                 lastBarrier = hc.barrier;
             }
 
-            void FixedUpdate()              // called every physics tick (50 Hz)
+            void FixedUpdate()             
             {
                 if (!body || !hc) return;
 
                 int stacks = body.inventory ? body.inventory.GetItemCount(ItemIndex) : 0;
-                if (stacks == 0) { lastBarrier = hc.barrier; return; }      // player doesn’t own item
+                if (stacks == 0) { lastBarrier = hc.barrier; return; }  
 
                 float current = hc.barrier;
                 if (current >= lastBarrier) { lastBarrier = current; return; } // barrier grew or unchanged
@@ -88,8 +88,8 @@ namespace ExamplePlugin
 
                 if (accumulatedLoss >= threshold)
                 {
-                    FirePulse(accumulatedLoss, stacks);   // do your 250 %-of-loss damage, VFX, etc.
-                    accumulatedLoss = 0f;              // empty the bucket
+                    FirePulse(accumulatedLoss, stacks); 
+                    accumulatedLoss = 0f;
                 }
 
                 lastBarrier = current;
@@ -101,16 +101,15 @@ namespace ExamplePlugin
                 float DAMAGE_MULT = 2.50f + 1.50f * (stacks - 1);
                 float damage = depletedBarrier * DAMAGE_MULT;
 
-                // create a short-lived inflictor tag so we can recognize our hits
                 var markerGO = new GameObject("UD_PulseMarker");
                 var marker = markerGO.AddComponent<PulseMarker>();
-                marker.center = body.corePosition;           // helps aim impact normal
-                marker.ttl = 1.0f;                           // lifetime just needs to cover the hit window
+                marker.center = body.corePosition;           
+                marker.ttl = 1.0f;                        
 
                 var pulse = new BlastAttack
                 {
                     attacker = body.gameObject,
-                    inflictor = markerGO,                    // <-- key line
+                    inflictor = markerGO,                  
                     teamIndex = body.teamComponent ? body.teamComponent.teamIndex
                                              : TeamComponent.GetObjectTeam(body.gameObject),
                     attackerFiltering = AttackerFiltering.NeverHitSelf,
@@ -118,7 +117,7 @@ namespace ExamplePlugin
                     baseForce = 0f,
                     bonusForce = Vector3.zero,
                     crit = body.RollCrit(),
-                    damageColorIndex = DamageColorIndex.Bleed,
+                    damageColorIndex = DamageColorIndex.Item,
                     damageType = DamageType.Generic,
                     falloffModel = BlastAttack.FalloffModel.None,
                     position = body.corePosition,
@@ -143,17 +142,16 @@ namespace ExamplePlugin
             if (body.inventory == null) return;
 
             int stacks = body.inventory.GetItemCount(UnendingDespair.ItemDef.itemIndex);
-            if (stacks == 0) return;                  // owner doesn’t have our item
+            if (stacks == 0) return;                 
 
             if (!body.outOfDanger) return;
 
             float targetBarrier = body.maxHealth * 0.10f;
             float missing = targetBarrier - body.healthComponent.barrier;
 
-            if (missing > 1f)                           // add only if we need > 1 HP
+            if (missing > 1f)                         
             {
                 body.healthComponent.AddBarrier(missing);
-                // ---- OPTIONAL DEBUG ----
                 // Chat.AddMessage($"[DEBUG] +{missing:F0} barrier ({stacks} stack(s))");
             }
         }

@@ -195,7 +195,6 @@ namespace ExamplePlugin
 
             internal static void PreloadIndicatorPrefab()
             {
-                // Try known keys (paths can vary slightly by version)
                 string[] keys = {
                     "RoR2/Base/Equipment/PassiveHealing/WoodSpriteIndicator.prefab",
                     "RoR2/Base/Lightning/LightningIndicator.prefab",
@@ -210,7 +209,7 @@ namespace ExamplePlugin
                             .LoadAssetAsync<GameObject>(k).WaitForCompletion();
                         if (go) { _visPrefab = go; break; }
                     }
-                    catch { /* try next */ }
+                    catch {  }
                 }
 
                 if (SoulLink.DEBUG_CHAT && !_visPrefab)
@@ -243,7 +242,7 @@ namespace ExamplePlugin
                 if (!_inds.TryGetValue(slot, out var ind) || ind == null)
                 {
                     var prefab = _visPrefab;
-                    if (!prefab) return; // nothing to show yet
+                    if (!prefab) return;
                     ind = new Indicator(slot.gameObject, prefab);
                     ind.active = false;
                     _inds[slot] = ind;
@@ -256,7 +255,6 @@ namespace ExamplePlugin
                     return;
                 }
 
-                // IMPORTANT: aim at a HURTBOX (like Woodsprite), not the body
                 var hb = FindFriendlyHurtboxInAim(slot, SoulLink.MaxRange, 20f);
                 ind.targetTransform = hb ? hb.transform : null;
                 ind.active = hb;
@@ -285,7 +283,6 @@ namespace ExamplePlugin
                 search.RefreshCandidates();
                 search.FilterOutGameObject(body.gameObject);
 
-                // Return the same thing Woodsprite would point at
                 return search.GetResults().FirstOrDefault();
             }
 
@@ -299,7 +296,7 @@ namespace ExamplePlugin
                     return null;
                 }
 
-                float extraRaycastDistance; // required by newer RoR2 signature
+                float extraRaycastDistance;
                 var ray = CameraRigController.ModifyAimRayIfApplicable(slot.GetAimRay(), slot.gameObject, out extraRaycastDistance);
                 if (SoulLink.DEBUG_CHAT) Chat.AddMessage($"[PV] Find start r={maxRange:F0} a={maxAngle:F0}° extra={extraRaycastDistance:F1}");
 

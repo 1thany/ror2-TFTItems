@@ -18,7 +18,7 @@ namespace ExamplePlugin
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Phorg";
         public const string PluginName = "TFTItems";
-        public const string PluginVersion = "1.1.1";
+        public const string PluginVersion = "1.1.2";
 
         public void Awake()
         {
@@ -111,7 +111,7 @@ namespace ExamplePlugin
             LanguageAPI.Add("HORIZON_FOCUS_DESC",
                 "When you <style=cIsDamage>stun or shock</style> an enemy, " +
                 "deal <style=cIsDamage>20%</style> of their current health " +
-                "(+10% per stack) as additional damage.");
+                "(+5% per stack) as additional damage.");
             LanguageAPI.Add("HORIZON_FOCUS_LORE", "The world narrows to a single point…");
 
             /* ────────────────  Knight's Vow ──────────────── */

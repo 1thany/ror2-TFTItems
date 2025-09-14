@@ -9,7 +9,7 @@ namespace ExamplePlugin
 {
     internal static class FlickerBlade
     {
-        internal static ItemDef ItemDef;      // note the capital I
+        internal static ItemDef ItemDef;      
         internal static BuffDef RageBuff;
 
         internal static void Define()
@@ -45,9 +45,6 @@ namespace ExamplePlugin
             ItemAPI.Add(new CustomItem(ItemDef, new ItemDisplayRuleDict(null)));
         }
 
-        /* ----------------------------------------------------------------- */
-        /* hooks                                                             */
-        /* ----------------------------------------------------------------- */
         internal static void Hooks()
         {
             On.RoR2.GlobalEventManager.ProcessHitEnemy += AddAttackSpeedBuff;
