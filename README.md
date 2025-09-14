@@ -4,7 +4,7 @@ Created by **Phorg**. https://thunderstore.io/package/Phorg/TFTItems/
 
 ---
 
-![item chart png](https://raw.githubusercontent.com/1thany/ror2-TFTItems/main/Thunderstore/icons/readMeItemChart.png)
+![item chart png](https://raw.githubusercontent.com/1thany/ror2-TFTItems/main/Thunderstore/BepInEx/plugins/Phorg.TFTItems/icons/readMeItemChart.png)
 
 
 ## Roadmap
