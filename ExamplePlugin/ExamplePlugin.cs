@@ -97,7 +97,7 @@ namespace ExamplePlugin
 
             /* ────────────────  Unending Despair ──────────────── */
             LanguageAPI.Add("UNENDING_DESPAIR_NAME", "Unending Despair");
-            LanguageAPI.Add("UNENDING_DESPAIR_PICKUP", "Lost barrier erupts in damaging pulses.");
+            LanguageAPI.Add("UNENDING_DESPAIR_PICKUP", "Gain barrier out-of-combat. Lost barrier erupts in damaging pulses.");
             LanguageAPI.Add("UNENDING_DESPAIR_DESC",
                 "Out-of-combat, regenerate a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>10%</style> max health." +
                 "Losing more than <style=cIsHealing>10%</style> max health in barrier, " +
@@ -107,9 +107,9 @@ namespace ExamplePlugin
 
             /* ────────────────  Horizon Focus ──────────────── */
             LanguageAPI.Add("HORIZON_FOCUS_NAME", "Horizon Focus");
-            LanguageAPI.Add("HORIZON_FOCUS_PICKUP", "Stuns chunk enemy health.");
+            LanguageAPI.Add("HORIZON_FOCUS_PICKUP", "Stunned enemies lose a portion of their health.");
             LanguageAPI.Add("HORIZON_FOCUS_DESC",
-                "When you <style=cIsDamage>stun, freeze, root or shock</style> an enemy, " +
+                "When you <style=cIsDamage>stun or shock</style> an enemy, " +
                 "deal <style=cIsDamage>20%</style> of their current health " +
                 "(+10% per stack) as additional damage.");
             LanguageAPI.Add("HORIZON_FOCUS_LORE", "The world narrows to a single point…");
